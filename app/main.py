@@ -7,19 +7,20 @@ import app.models  # ensures models are registered
 from app.routers import auth
 from app.core.security import get_current_user
 from app.models.user import User
+from app.routers import auth, account, transaction
 
-# Setup logging
+
 setup_logging()
 
-# Create tables
 Base.metadata.create_all(bind=engine)
 
-# Create FastAPI app
 app = FastAPI(title=settings.APP_NAME)
 
-# Include routers
 app.include_router(auth.router)
 
+app.include_router(account.router)
+
+app.include_router(transaction.router)
 
 @app.get("/health/live")
 def health_live():
