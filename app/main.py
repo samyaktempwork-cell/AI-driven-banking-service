@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from app.core.logging import setup_logging
 from app.config import settings
+from app.database import engine, Base
+import app.models
 
 setup_logging()
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.APP_NAME)
 
