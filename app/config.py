@@ -1,14 +1,17 @@
-import os
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
-load_dotenv()
 
-class Settings:
+class Settings(BaseSettings):
     APP_NAME: str = "AI Banking Service"
-    DEBUG: bool = os.getenv("DEBUG", "False") == "True"
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./banking.db")
-    JWT_SECRET: str = os.getenv("JWT_SECRET", "supersecretkey")
-    JWT_ALGORITHM: str = "HS256"
+
+    DATABASE_URL: str = "postgresql+psycopg2://postgres:postgres@banking-db:5432/banking"
+
+    SECRET_KEY: str = "supersecretkey"
+    ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+
+    model_config = ConfigDict(env_file=".env")
+
 
 settings = Settings()

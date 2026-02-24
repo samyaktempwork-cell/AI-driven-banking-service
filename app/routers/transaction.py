@@ -129,3 +129,26 @@ def transfer(
     db.refresh(transaction)
 
     return transaction
+
+@router.get("/{account_id}", response_model=list[TransactionResponse])
+def get_account_transactions(
+    account_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    account = db.query(Account).filter(
+        Account.id == account_id,
+        Account.user_id == current_user.id,
+    ).first()
+
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+
+    transactions = (
+        db.query(Transaction)
+        .filter(Transaction.account_id == account_id)
+        .order_by(Transaction.created_at.desc())
+        .all()
+    )
+
+    return transactions
