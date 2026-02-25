@@ -207,6 +207,16 @@ pytest --cov=app --cov-report=term-missing
 
 ---
 
+## Example API Call
+
+### Deposit
+---
+    curl -X POST http://localhost:8000/transactions/deposit \
+    -H "Authorization: Bearer <token>" \
+    -H "Content-Type: application/json" \
+    -d '{"account_id":1,"amount":100}'
+---
+
 ## Security Considerations
 
 - Passwords hashed using bcrypt  

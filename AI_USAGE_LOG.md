@@ -1,26 +1,49 @@
-# AI Usage Report
+# AI Usage Log
+
+## Objective
+Document how AI tools were used responsibly during development.
+
+---
 
 ## Tools Used
-- ChatGPT (architecture, code generation, debugging)
-- AI-assisted test generation
+- ChatGPT (architecture iteration, edge case reasoning)
+- AI-assisted refactoring suggestions
+- Prompt-driven test generation (validated manually)
 
-## Example Prompts
-- "Generate FastAPI banking service with accounts and transactions"
-- "Write integration tests for deposit and withdraw flow"
-- "Fix ownership validation bug in card service"
+---
 
-## Challenges
-- Ownership attribute mismatch (owner_id vs user_id)
-- Statement total mismatch due to transaction type naming
+## Where AI Was Used
+### 1. Initial Project Structure
+- Generated base FastAPI scaffolding
+- Manually refactored for layered architecture
 
-## Manual Intervention
-- Refactoring database relationships
-- Adjusting transaction types for consistency
-- Debugging failing test cases
+### 2. Test Coverage Expansion
+- AI suggested edge cases
+- Developer validated and adjusted logic
 
-## AI Contribution
-AI accelerated:
-- API scaffolding
-- Test coverage
-- Docker setup
-- Debugging logic errors
+### 3. Logging Improvements
+- AI proposed structured logging format
+- Final implementation manually verified
+
+---
+
+## What Was NOT Delegated to AI
+- Transaction integrity logic
+- Security model decisions
+- Final statement aggregation logic
+- Docker runtime debugging
+
+---
+
+## Human Validation Steps
+- Manual code review
+- pytest execution
+- Failure case simulation
+- Docker runtime testing
+
+---
+
+## AI Risk Mitigation
+- No secrets shared
+- No direct copy-paste without review
+- Logic validated through testing
