@@ -16,3 +16,4 @@ class Account(Base):
 
     owner = relationship("User", back_populates="accounts")
     transactions = relationship("Transaction", back_populates="account", cascade="all, delete")
+    cards = relationship("Card", back_populates="account", cascade="all, delete-orphan")

@@ -5,7 +5,7 @@ from pydantic import ConfigDict
 class Settings(BaseSettings):
     APP_NAME: str = "AI Banking Service"
 
-    DATABASE_URL: str = "postgresql+psycopg2://postgres:postgres@banking-db:5432/banking"
+    DATABASE_URL: str = "sqlite:///./banking.db"
 
     SECRET_KEY: str = "supersecretkey"
     ALGORITHM: str = "HS256"

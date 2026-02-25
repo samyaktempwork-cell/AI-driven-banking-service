@@ -1,7 +1,9 @@
+from app.schemas import account
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 import uuid
-
+import logging
+logger = logging.getLogger(__name__)
 from app.database import get_db
 from app.models.account import Account
 from app.models.user import User
@@ -31,7 +33,7 @@ def create_account(
     db.add(new_account)
     db.commit()
     db.refresh(new_account)
-
+    logger.info(f"Account created: user_id={current_user.id}, account_id={new_account.id}")
     return new_account
 
 

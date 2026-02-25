@@ -2,73 +2,83 @@
 
 ## Overview
 
-This project implements a production-ready banking REST service developed using AI-driven development practices.
+This project implements a production-ready Banking REST API built using AI-assisted development practices and modern backend engineering standards.
 
-The objective of this project is to demonstrate:
+The objective of this implementation is to demonstrate:
 
-- Secure authentication using JWT
-- Atomic and transaction-safe money transfers
-- SQLite-backed relational persistence
-- Structured JSON logging for observability
-- Health checks and readiness probes
-- Docker containerization with multi-stage builds
-- Comprehensive unit and integration testing
-- Streamlit-based UI demo client
-- Postman collection for full API workflow demonstration
-- Transparent AI usage documentation
+- Secure JWT-based authentication  
+- Transaction-safe deposit, withdrawal, and transfer operations  
+- SQLite-backed relational persistence  
+- Structured logging for observability  
+- Health and readiness endpoints  
+- Docker containerization  
+- Unit and integration testing  
+- Transparent AI usage documentation  
 
-This repository reflects production-grade backend engineering aligned with modern AI/ML system deployment standards.
+This repository reflects clean architecture principles and production-aligned backend design.
 
 ---
 
 ## Key Features
 
 ### Authentication
-- User signup and login
-- Secure password hashing (bcrypt)
-- JWT-based authentication
-- Protected endpoints
+
+- User signup and login  
+- Password hashing using bcrypt  
+- JWT-based authentication  
+- Protected endpoints using dependency injection  
 
 ### Account Management
-- Create accounts
-- Retrieve accounts
-- List user-owned accounts
-- Ownership validation
 
-### Transactions and Money Transfers
-- Atomic database transactions
-- Insufficient funds validation
-- Transaction history tracking
-- Rollback safety on failure
+- Create account  
+- List user-owned accounts  
+- Ownership validation  
+- Balance tracking  
+
+### Transactions
+
+- Deposit  
+- Withdraw  
+- Transfer between accounts  
+- Insufficient funds validation  
+- Atomic transaction handling  
+- Transaction history tracking  
+
+### Statements
+
+- Generate account statements  
+- Date-range filtering  
+- Debit/Credit aggregation  
+- Closing balance calculation  
 
 ### Observability
-- Structured JSON logging
-- Log levels (INFO, ERROR, DEBUG)
-- Request-level logging
-- Error tracking middleware
+
+- Structured logging using Python logging  
+- Log levels (INFO, WARNING, ERROR)  
+- Transaction event logging  
+- Failure event logging  
 
 ### Health Monitoring
-- `/health/live`
-- `/health/ready`
-- Database connectivity check
-- Graceful shutdown handling
+
+- `/health/live`  
+- `/health/ready`  
+- Database connectivity validation  
 
 ### Testing
-- Unit tests for business logic
-- Integration tests for API endpoints
-- Coverage-driven validation approach
-- Edge case validation (invalid auth, insufficient balance, etc.)
+
+- Pytest-based test suite  
+- Authentication tests  
+- Transaction flow tests  
+- Card lifecycle tests  
+- Statement generation tests  
+- Edge-case validations  
 
 ### Containerization
-- Multi-stage Dockerfile
-- docker-compose for local development
-- Environment-based configuration
-- Production-ready image build
 
-### Demo and API Testing
-- Streamlit UI client demonstrating full workflow
-- Postman collection with environment variables
-- End-to-end transaction flow validation
+- Dockerized FastAPI service  
+- SQLite persistence  
+- Environment-based configuration  
+- Reproducible build process  
 
 ---
 
@@ -76,7 +86,7 @@ This repository reflects production-grade backend engineering aligned with moder
 
 The system follows a layered architecture:
 
-API Layer → Service Layer → Repository Layer → Database
+**API Layer → Service Layer → Database Layer**
 
 ### Project Structure
 
@@ -85,7 +95,6 @@ ai-driven-banking-service/
 │
 ├── app/
 │   ├── main.py
-│   ├── config.py
 │   ├── database.py
 │   ├── models/
 │   ├── schemas/
@@ -94,16 +103,10 @@ ai-driven-banking-service/
 │   └── core/
 │
 ├── tests/
-│   ├── unit/
-│   └── integration/
 │
-├── ui/
-├── postman/
-├── docker/
-│
-├── .env.example
 ├── requirements.txt
 ├── docker-compose.yml
+├── Dockerfile
 ├── AI_USAGE_LOG.md
 ├── SECURITY.md
 ├── ROADMAP.md
@@ -111,68 +114,60 @@ ai-driven-banking-service/
 ```
 
 This structure ensures:
-- Separation of concerns
-- Testability
-- Maintainability
-- Scalability
+
+- Separation of concerns  
+- Testability  
+- Maintainability  
+- Clear ownership boundaries  
 
 ---
 
 ## Technology Stack
 
-- Python 3.11
-- FastAPI
-- SQLAlchemy
-- SQLite
-- JWT Authentication
-- bcrypt
-- pytest
-- Docker
-- docker-compose
-- Streamlit
+- Python 3.11  
+- FastAPI  
+- SQLAlchemy  
+- SQLite  
+- JWT (python-jose)  
+- bcrypt  
+- pytest  
+- Docker  
 
 ---
 
-## Setup Instructions
+## Local Setup
 
-### 1. Clone Repository
-
-```bash
-git clone https://github.com/<your-username>/ai-driven-banking-service.git
-cd ai-driven-banking-service
-```
-
-### 2. Create Virtual Environment
+### 1. Create Virtual Environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate      # Windows
 ```
 
-### 3. Install Dependencies
+Activate environment:
+
+**Windows**
+```bash
+venv\Scripts\activate
+```
+
+**Mac/Linux**
+```bash
+source venv/bin/activate
+```
+
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Environment Configuration
-
-Copy `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-Configure environment variables as needed.
-
-### 5. Run Application
+### 3. Run Application
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-API documentation available at:
+Swagger UI:
 
 ```
 http://localhost:8000/docs
@@ -180,15 +175,17 @@ http://localhost:8000/docs
 
 ---
 
-## Running with Docker
+## Docker Setup
 
-### Build and Start
+### Build and Run
 
 ```bash
-docker-compose up --build
+docker compose down -v
+docker compose build --no-cache
+docker compose up
 ```
 
-Service will run at:
+Application will be available at:
 
 ```
 http://localhost:8000
@@ -199,10 +196,10 @@ http://localhost:8000
 ## Running Tests
 
 ```bash
-pytest --cov=app
+pytest -v
 ```
 
-Coverage report:
+With coverage:
 
 ```bash
 pytest --cov=app --cov-report=term-missing
@@ -210,126 +207,67 @@ pytest --cov=app --cov-report=term-missing
 
 ---
 
-## Postman Collection
-
-The `postman/` directory contains:
-
-- Banking API Collection
-- Environment configuration
-- Preconfigured authentication flow
-
-Workflow includes:
-1. Signup
-2. Login
-3. Create account
-4. Deposit
-5. Transfer
-6. View transactions
-7. Health check
-
----
-
-## Streamlit UI Demo
-
-Run UI:
-
-```bash
-streamlit run ui/app.py
-```
-
-The UI demonstrates:
-- Login
-- Account creation
-- Transfer
-- Transaction history
-
----
-
 ## Security Considerations
 
-- Passwords are hashed using bcrypt
-- JWT secret is environment-based
-- No secrets committed to repository
-- SQLite database excluded from version control
-- Input validation via Pydantic models
-- Transaction-level atomicity enforced
+- Passwords hashed using bcrypt  
+- JWT secret configured via environment variables  
+- Input validation via Pydantic models  
+- Database access scoped per user  
+- Transaction validation enforced  
+- No credentials committed to repository  
 
-See `SECURITY.md` for more details.
+See `SECURITY.md` for extended security details.
 
 ---
 
 ## AI-Driven Development Approach
 
-This project was built using iterative AI-assisted workflows.
+This project was developed using structured AI-assisted engineering.
 
-The `AI_USAGE_LOG.md` file documents:
+AI was used for:
 
-- AI tools used
-- Prompt iterations
-- Architectural decisions
-- Debugging assistance
-- Areas requiring manual intervention
-- Improvements across development phases
+- Architecture planning  
+- Code scaffolding  
+- Debugging assistance  
+- Refactoring suggestions  
+- Test case generation  
+- Documentation drafting  
 
-The goal was not just to use AI, but to demonstrate effective AI collaboration in production-grade engineering.
+All architectural decisions and implementations were manually reviewed and validated.
+
+See `AI_USAGE_LOG.md` for detailed breakdown.
 
 ---
 
 ## Roadmap
 
-Planned future improvements:
+Planned future enhancements:
 
-- Fraud detection module
-- Daily transfer limits
-- Card management enhancements
-- Role-based access control
-- PostgreSQL production migration
-- Kubernetes deployment configuration
-- CI/CD pipeline integration
-- OpenTelemetry tracing
-- Metrics dashboard
+- Fraud detection module  
+- Rate limiting  
+- Role-based access control  
+- PostgreSQL migration  
+- OpenTelemetry integration  
+- CI/CD pipeline  
+- Metrics dashboard  
 
-See `ROADMAP.md` for extended details.
+See `ROADMAP.md` for detailed roadmap planning.
 
 ---
 
-## Development Checkpoints
-
-This project follows a 3-day sprint checkpoint model:
-
-- [ ] Core application structure
-- [ ] Authentication system
-- [ ] Account management
-- [ ] Transaction and transfer logic
-- [ ] Test suite implementation
-- [ ] Structured logging
-- [ ] Health endpoints
-- [ ] Dockerization
-- [ ] UI demo
-- [ ] Postman collection
-- [ ] AI usage documentation
-
----
-
-## Design Philosophy
+## Design Principles
 
 This implementation prioritizes:
 
-- Production-readiness over feature bloat
-- Clean architecture over rapid prototyping
-- Test-driven validation
-- Observability and operational maturity
-- Secure-by-default principles
-- AI-assisted but engineer-controlled development
+- Production-readiness  
+- Clean architecture  
+- Secure-by-default design  
+- Test-driven validation  
+- Observability  
+- AI-assisted but engineer-controlled development  
 
 ---
 
 ## License
 
 MIT License
-
----
-
-## Author
-
-Developed using structured AI-driven engineering methodology to demonstrate production-grade backend capabilities.

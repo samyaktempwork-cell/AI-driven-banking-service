@@ -32,8 +32,8 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     return jwt.encode(
         to_encode,
-        settings.JWT_SECRET,
-        algorithm=settings.JWT_ALGORITHM,
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
     )
 
 
@@ -49,8 +49,8 @@ def get_current_user(
     try:
         payload = jwt.decode(
             token,
-            settings.JWT_SECRET,
-            algorithms=[settings.JWT_ALGORITHM],
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
         )
         user_id: str | None = payload.get("sub")
         if user_id is None:
