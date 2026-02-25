@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Banking Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">AI-Driven Banking</p>
+        <h1>Operations Console</h1>
+        <p class="lede">Track balances, run transfers, issue cards, and generate statements from a single glass pane.</p>
+      </div>
+      <div class="pill">
+        <div class="dot"></div>
+        Live on FastAPI
+      </div>
+    </header>
+
+    <section class="grid metrics" id="metrics">
+      <div class="tile">
+        <p class="label">Total Balance</p>
+        <h2 id="total-balance">$0</h2>
+        <p class="sub">Sum of all active accounts</p>
+      </div>
+      <div class="tile">
+        <p class="label">Accounts</p>
+        <h2 id="account-count">0</h2>
+        <p class="sub">Owned by the logged-in user</p>
+      </div>
+      <div class="tile">
+        <p class="label">Latest Statement</p>
+        <h2 id="last-closing">$0</h2>
+        <p class="sub" id="last-range">No range selected</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Access</h3>
+        <div class="actions">
+          <button id="logout-btn" class="ghost">Logout</button>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <form id="signup-form" class="card">
+          <h4>Sign Up</h4>
+          <label>Email <input type="email" name="email" required></label>
+          <label>Full Name <input type="text" name="full_name" required></label>
+          <label>Password <input type="password" name="password" required></label>
+          <button type="submit">Create Account</button>
+        </form>
+        <form id="login-form" class="card">
+          <h4>Login</h4>
+          <label>Email <input type="email" name="email" required></label>
+          <label>Password <input type="password" name="password" required></label>
+          <button type="submit">Login &amp; Load Data</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Accounts</h3>
+        <div class="actions">
+          <button id="refresh-accounts" class="ghost">Refresh</button>
+        </div>
+      </div>
+      <div class="grid grid-3" id="accounts"></div>
+      <form id="create-account-form" class="card inline-form">
+        <div>
+          <label>Currency
+            <select name="currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit">Open New Account</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Money Movement</h3>
+      </div>
+      <div class="grid grid-3">
+        <form id="deposit-form" class="card">
+          <h4>Deposit</h4>
+          <label>Account <select name="account_id" required></select></label>
+          <label>Amount <input type="number" name="amount" min="0" step="0.01" required></label>
+          <button type="submit">Deposit</button>
+        </form>
+        <form id="withdraw-form" class="card">
+          <h4>Withdraw</h4>
+          <label>Account <select name="account_id" required></select></label>
+          <label>Amount <input type="number" name="amount" min="0" step="0.01" required></label>
+          <button type="submit">Withdraw</button>
+        </form>
+        <form id="transfer-form" class="card">
+          <h4>Transfer</h4>
+          <label>From <select name="from_account_id" required></select></label>
+          <label>To <select name="to_account_id" required></select></label>
+          <label>Amount <input type="number" name="amount" min="0" step="0.01" required></label>
+          <button type="submit">Transfer</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Cards</h3>
+      </div>
+      <div class="grid grid-2">
+        <form id="issue-card-form" class="card">
+          <h4>Issue Card</h4>
+          <label>Account <select name="account_id" required></select></label>
+          <label>Expiry Date <input type="date" name="expiry_date" required></label>
+          <label>Daily Limit <input type="number" name="daily_limit" min="0" step="1" value="5000"></label>
+          <button type="submit">Issue</button>
+        </form>
+        <div class="card">
+          <div class="card-header">
+            <h4>Cards by Account</h4>
+            <select id="cards-account-filter"></select>
+          </div>
+          <div id="card-list" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h3>Statements &amp; Activity</h3>
+      </div>
+      <div class="grid grid-2">
+        <form id="statement-form" class="card">
+          <h4>Generate Statement</h4>
+          <label>Account <select name="account_id" required></select></label>
+          <label>From <input type="date" name="from_date" required></label>
+          <label>To <input type="date" name="to_date" required></label>
+          <button type="submit">Fetch Statement</button>
+        </form>
+        <div class="card">
+          <div class="card-header">
+            <h4>Summary</h4>
+          </div>
+          <div class="statement-summary">
+            <div>
+              <p class="label">Total Credit</p>
+              <p id="sum-credit">$0</p>
+            </div>
+            <div>
+              <p class="label">Total Debit</p>
+              <p id="sum-debit">$0</p>
+            </div>
+            <div>
+              <p class="label">Closing Balance</p>
+              <p id="closing-balance">$0</p>
+            </div>
+          </div>
+          <div id="transaction-list" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast"></div>
+  </div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

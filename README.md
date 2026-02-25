@@ -191,6 +191,16 @@ Application will be available at:
 http://localhost:8000
 ```
 
+### UI Console
+
+After the server is running, open the lightweight web console at:
+
+```
+http://localhost:8000/ui/
+```
+
+It provides login/signup, account creation, deposits, withdrawals, transfers, card issuing/blocking, and statement views with balance summaries.
+
 ---
 
 ## Running Tests

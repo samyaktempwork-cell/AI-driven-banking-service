@@ -1,6 +1,8 @@
 from app.core.logging_config import setup_logging
 setup_logging()
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 from sqlalchemy.exc import OperationalError
 import time
 
@@ -29,6 +31,13 @@ app.include_router(cards_router)
 app.include_router(statements_router)
 app.include_router(accounts_router)
 app.include_router(health.router)
+
+# -------------------------------
+# Static UI
+# -------------------------------
+static_dir = Path(__file__).resolve().parent.parent / "ui"
+if static_dir.exists():
+    app.mount("/ui", StaticFiles(directory=static_dir, html=True), name="ui")
 
 
 # -------------------------------
